@@ -1,6 +1,6 @@
-# myadmin
+# mydesktop
 
-Template for Simple Admin Web App
+Template for Simple Desktop App
 FVM use 3.13.3
 
 A new Flutter project.
