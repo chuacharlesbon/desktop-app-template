@@ -17,14 +17,14 @@ class MyAppDataSource {
   }) async {
     dynamic result;
     try {
-      Response response = await dio.post(
+      /* Response response = await dio.post(
         '$serverUrl/ping',
         data: {
             "referrer": referrer
         },
-      );
-      result = response.data;
-      log(response.data.toString());
+      ); */
+      result = {"message": "Debug"}; //response.data;
+      //log(response.data.toString());
     } on DioException catch (e) {
       if (e.response != null) {
         result = e.response?.data?.toString() ?? "ERR: Something went wrong.";

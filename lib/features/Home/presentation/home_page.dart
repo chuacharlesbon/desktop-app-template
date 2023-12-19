@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:myadmin/components/drawer.dart';
 import 'package:myadmin/cubits/my_app_cubit/my_app_cubit.dart';
 import 'package:myadmin/routes/route_names.dart';
+import 'package:window_manager/window_manager.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, this.title});
@@ -42,22 +43,52 @@ class _MyHomePageState extends State<HomePage> {
       bloc: myAppCubit,
       builder: (context, state) {
         return Scaffold(
-          body: Row(
+          body: Stack(
             children: [
-              const DrawerAdmin(),
-              Expanded(
-                child: Container(
-                  width: double.infinity,
-                  height: double.infinity,
-                  color: Colors.deepPurple.withOpacity(0.2),
-                  child: GestureDetector(
-                    onTap: () {
-                      GetIt.instance<GoRouter>().goNamed(Routes.login.name);
-                    },
-                    child: const Text(
-                      'Home'
+              Row(
+                children: [
+                  const DrawerAdmin(),
+                  Expanded(
+                    child: Container(
+                      width: double.infinity,
+                      height: double.infinity,
+                      color: Colors.deepPurple.withOpacity(0.2),
+                      child: GestureDetector(
+                        onTap: () {
+                          GetIt.instance<GoRouter>().goNamed(Routes.login.name);
+                        },
+                        child: const Text(
+                          'Home'
+                        ),
+                      )
                     ),
                   )
+                ],
+              ),
+              Align(
+                alignment: Alignment.topRight,
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      InkWell(
+                        onTap: () async {
+                          await windowManager.destroy();
+                        },
+                        child: const Tooltip(
+                          message: "Close this window",
+                          child: Padding(
+                            padding: EdgeInsets.all(20.0),
+                            child: Icon(
+                              Icons.cancel_sharp,
+                              color: Colors.red
+                            ),
+                          ),
+                        )
+                      ),
+                    ],
+                  ),
                 ),
               )
             ],

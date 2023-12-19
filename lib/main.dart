@@ -7,7 +7,25 @@ import 'package:go_router/go_router.dart';
 import 'package:myadmin/cubits/init_cubit.dart';
 import 'package:myadmin/cubits/my_app_cubit/my_app_cubit.dart';
 
-void main() {
+import 'package:window_manager/window_manager.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await windowManager.ensureInitialized();
+
+  WindowOptions windowOptions = const WindowOptions(
+    //size: Size(800, 600),
+    center: true,
+    backgroundColor: Colors.transparent,
+    skipTaskbar: false,
+    titleBarStyle: TitleBarStyle.hidden,
+  );
+  windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.show();
+    await windowManager.focus();
+    await windowManager.setFullScreen(true);
+  });
+
   initializeCubits();
   runApp(const MyApp());
 }
@@ -41,6 +59,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   void initData() {
+
     log("Initialize main widget");
     final myAppCubit = GetIt.instance<MyAppCubit>();
     myAppCubit.testServer();

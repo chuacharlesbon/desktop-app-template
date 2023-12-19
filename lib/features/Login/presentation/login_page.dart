@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myadmin/cubits/my_app_cubit/my_app_cubit.dart';
 import 'package:myadmin/routes/route_names.dart';
+import 'package:window_manager/window_manager.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key, this.title});
@@ -41,19 +42,49 @@ class _MyLoginPageState extends State<LoginPage> {
       bloc: myAppCubit,
       builder: (context, state) {
         return Scaffold(
-          body: Container(
-            width: double.infinity,
-            height: double.infinity,
-            color: Colors.deepPurple.withOpacity(0.2),
-            child: GestureDetector(
-              onTap: () {
-                GetIt.instance<GoRouter>().goNamed(Routes.home.name);
-              },
-              child: const Text(
-                'Login'
+          body: Stack(
+            children: [
+              Container(
+                width: double.infinity,
+                height: double.infinity,
+                color: Colors.deepPurple.withOpacity(0.2),
+                child: GestureDetector(
+                  onTap: () {
+                    GetIt.instance<GoRouter>().goNamed(Routes.home.name);
+                  },
+                  child: const Text(
+                    'Login'
+                  ),
+                )
               ),
-            )
-          ),
+              Align(
+                alignment: Alignment.topRight,
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      InkWell(
+                        onTap: () async {
+                          await windowManager.destroy();
+                        },
+                        child: const Tooltip(
+                          message: "Close this window",
+                          child: Padding(
+                            padding: EdgeInsets.all(20.0),
+                            child: Icon(
+                              Icons.cancel_sharp,
+                              color: Colors.red
+                            ),
+                          ),
+                        )
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          )
         );
       }
     );
