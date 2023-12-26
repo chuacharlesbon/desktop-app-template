@@ -3,7 +3,8 @@
 Template for Simple Desktop App
 FVM use 3.13.3
 
-A new Flutter project.
+- A new Flutter project
+- build\windows\runner\Release\yourapp.exe
 
 ## Getting Started
 
