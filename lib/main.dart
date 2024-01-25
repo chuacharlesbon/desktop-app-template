@@ -30,36 +30,16 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'My Admin',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'My Admin'),
-    );
-  }
+  State<MyApp> createState() => _MyAppState();
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
+class _MyAppState extends State<MyApp> {
 
   void initData() {
-
     log("Initialize main widget");
     final myAppCubit = GetIt.instance<MyAppCubit>();
     myAppCubit.testServer();
@@ -77,6 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     final serviceLocator = GetIt.instance;
@@ -86,6 +67,10 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (context, state) {
         return MaterialApp.router(
           title: 'My Admin',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+          ),
           routerConfig: serviceLocator<GoRouter>(), //_router,
         );
       }
