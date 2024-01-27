@@ -20,6 +20,9 @@ class LoginPage extends StatefulWidget {
 
 class _MyLoginPageState extends State<LoginPage> {
 
+  TextEditingController managerCode = TextEditingController();
+  TextEditingController password = TextEditingController();
+
   void initData() {
     log("Initialize Login screen");
   }
@@ -121,6 +124,7 @@ class _MyLoginPageState extends State<LoginPage> {
                               SizedBox(
                                 width: 400,
                                 child: TextFormField(
+                                  controller: managerCode,
                                   decoration: InputDecoration(
                                     filled: true,
                                     fillColor: Colors.white,
@@ -132,6 +136,7 @@ class _MyLoginPageState extends State<LoginPage> {
                               SizedBox(
                                 width: 400,
                                 child: TextFormField(
+                                  controller: password,
                                   decoration: InputDecoration(
                                     filled: true,
                                     fillColor: Colors.white,
@@ -196,11 +201,13 @@ class _MyLoginPageState extends State<LoginPage> {
                                             padding: const EdgeInsets.all(8.0),
                                             child: FilledButton(
                                               style: FilledButton.styleFrom(
-                                                backgroundColor: Colors.white,
+                                                backgroundColor: Colors.white70,
                                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                               ),
                                               onPressed: () {
-                                          
+                                                setState(() {
+                                                  managerCode.text += "7";
+                                                });
                                               },
                                               child: Center(
                                                   child: Text(
@@ -221,11 +228,13 @@ class _MyLoginPageState extends State<LoginPage> {
                                             padding: const EdgeInsets.all(8.0),
                                             child: FilledButton(
                                               style: FilledButton.styleFrom(
-                                                backgroundColor: Colors.white,
+                                                backgroundColor: Colors.white70,
                                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                               ),
                                               onPressed: () {
-                                          
+                                                setState(() {
+                                                  managerCode.text += "8";
+                                                });
                                               },
                                               child: Center(
                                                   child: Text(
@@ -246,11 +255,13 @@ class _MyLoginPageState extends State<LoginPage> {
                                             padding: const EdgeInsets.all(8.0),
                                             child: FilledButton(
                                               style: FilledButton.styleFrom(
-                                                backgroundColor: Colors.white,
+                                                backgroundColor: Colors.white70,
                                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                               ),
                                               onPressed: () {
-                                          
+                                                setState(() {
+                                                  managerCode.text += "9";
+                                                });
                                               },
                                               child: Center(
                                                   child: Text(
@@ -271,11 +282,15 @@ class _MyLoginPageState extends State<LoginPage> {
                                             padding: const EdgeInsets.all(8.0),
                                             child: FilledButton(
                                               style: FilledButton.styleFrom(
-                                                backgroundColor: Colors.white,
+                                                backgroundColor: Colors.white70,
                                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                               ),
                                               onPressed: () {
-                                          
+                                                if(managerCode.text.isNotEmpty){
+                                                  setState(() {
+                                                    managerCode.text = managerCode.text.substring(0, (managerCode.text.length - 1));
+                                                  });
+                                                }
                                               },
                                               child: Center(
                                                   child: Text(
@@ -309,11 +324,13 @@ class _MyLoginPageState extends State<LoginPage> {
                                             padding: const EdgeInsets.all(8.0),
                                             child: FilledButton(
                                               style: FilledButton.styleFrom(
-                                                backgroundColor: Colors.white,
+                                                backgroundColor: Colors.white70,
                                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                               ),
                                               onPressed: () {
-                                          
+                                                setState(() {
+                                                  managerCode.text += "4";
+                                                });
                                               },
                                               child: Center(
                                                   child: Text(
@@ -334,11 +351,13 @@ class _MyLoginPageState extends State<LoginPage> {
                                             padding: const EdgeInsets.all(8.0),
                                             child: FilledButton(
                                               style: FilledButton.styleFrom(
-                                                backgroundColor: Colors.white,
+                                                backgroundColor: Colors.white70,
                                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                               ),
                                               onPressed: () {
-                                          
+                                                setState(() {
+                                                  managerCode.text += "5";
+                                                });
                                               },
                                               child: Center(
                                                   child: Text(
@@ -359,11 +378,13 @@ class _MyLoginPageState extends State<LoginPage> {
                                             padding: const EdgeInsets.all(8.0),
                                             child: FilledButton(
                                               style: FilledButton.styleFrom(
-                                                backgroundColor: Colors.white,
+                                                backgroundColor: Colors.white70,
                                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                               ),
                                               onPressed: () {
-                                          
+                                                setState(() {
+                                                  managerCode.text += "6";
+                                                });
                                               },
                                               child: Center(
                                                   child: Text(
@@ -384,11 +405,13 @@ class _MyLoginPageState extends State<LoginPage> {
                                             padding: const EdgeInsets.all(8.0),
                                             child: FilledButton(
                                               style: FilledButton.styleFrom(
-                                                backgroundColor: Colors.white,
+                                                backgroundColor: Colors.white70,
                                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                               ),
                                               onPressed: () {
-                                          
+                                                setState(() {
+                                                  managerCode.text += "#";
+                                                });
                                               },
                                               child: Center(
                                                   child: Text(
@@ -422,11 +445,13 @@ class _MyLoginPageState extends State<LoginPage> {
                                             padding: const EdgeInsets.all(8.0),
                                             child: FilledButton(
                                               style: FilledButton.styleFrom(
-                                                backgroundColor: Colors.white,
+                                                backgroundColor: Colors.white70,
                                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                               ),
                                               onPressed: () {
-                                          
+                                                setState(() {
+                                                  managerCode.text += "1";
+                                                });
                                               },
                                               child: Center(
                                                   child: Text(
@@ -447,11 +472,13 @@ class _MyLoginPageState extends State<LoginPage> {
                                             padding: const EdgeInsets.all(8.0),
                                             child: FilledButton(
                                               style: FilledButton.styleFrom(
-                                                backgroundColor: Colors.white,
+                                                backgroundColor: Colors.white70,
                                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                               ),
                                               onPressed: () {
-                                          
+                                                setState(() {
+                                                  managerCode.text += "2";
+                                                });
                                               },
                                               child: Center(
                                                   child: Text(
@@ -472,11 +499,13 @@ class _MyLoginPageState extends State<LoginPage> {
                                             padding: const EdgeInsets.all(8.0),
                                             child: FilledButton(
                                               style: FilledButton.styleFrom(
-                                                backgroundColor: Colors.white,
+                                                backgroundColor: Colors.white70,
                                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                               ),
                                               onPressed: () {
-                                          
+                                                setState(() {
+                                                  managerCode.text += "3";
+                                                });
                                               },
                                               child: Center(
                                                   child: Text(
@@ -497,11 +526,13 @@ class _MyLoginPageState extends State<LoginPage> {
                                             padding: const EdgeInsets.all(8.0),
                                             child: FilledButton(
                                               style: FilledButton.styleFrom(
-                                                backgroundColor: Colors.white,
+                                                backgroundColor: Colors.white70,
                                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                               ),
                                               onPressed: () {
-                                          
+                                                setState(() {
+                                                  managerCode.text += "*";
+                                                });
                                               },
                                               child: Center(
                                                   child: Text(
@@ -535,11 +566,13 @@ class _MyLoginPageState extends State<LoginPage> {
                                             padding: const EdgeInsets.all(8.0),
                                             child: FilledButton(
                                               style: FilledButton.styleFrom(
-                                                backgroundColor: Colors.white,
+                                                backgroundColor: Colors.white70,
                                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                               ),
                                               onPressed: () {
-                                          
+                                                setState(() {
+                                                  managerCode.text += ".";
+                                                });
                                               },
                                               child: Center(
                                                   child: Text(
@@ -560,11 +593,13 @@ class _MyLoginPageState extends State<LoginPage> {
                                             padding: const EdgeInsets.all(8.0),
                                             child: FilledButton(
                                               style: FilledButton.styleFrom(
-                                                backgroundColor: Colors.white,
+                                                backgroundColor: Colors.white70,
                                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                               ),
                                               onPressed: () {
-                                          
+                                                setState(() {
+                                                  managerCode.text += "0";
+                                                });
                                               },
                                               child: Center(
                                                   child: Text(
@@ -585,11 +620,13 @@ class _MyLoginPageState extends State<LoginPage> {
                                             padding: const EdgeInsets.all(8.0),
                                             child: FilledButton(
                                               style: FilledButton.styleFrom(
-                                                backgroundColor: Colors.white,
+                                                backgroundColor: Colors.white70,
                                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                               ),
                                               onPressed: () {
-                                          
+                                                setState(() {
+                                                  managerCode.text += ",";
+                                                });
                                               },
                                               child: Center(
                                                   child: Text(
@@ -610,11 +647,13 @@ class _MyLoginPageState extends State<LoginPage> {
                                             padding: const EdgeInsets.all(8.0),
                                             child: FilledButton(
                                               style: FilledButton.styleFrom(
-                                                backgroundColor: Colors.white,
+                                                backgroundColor: Colors.white70,
                                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                               ),
                                               onPressed: () {
-                                          
+                                                setState(() {
+                                                  managerCode.text += "";
+                                                });
                                               },
                                               child: Center(
                                                   child: Text(

@@ -1,13 +1,22 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hive/hive.dart';
 import 'package:myadmin/cubits/init_cubit.dart';
 import 'package:myadmin/cubits/my_app_cubit/my_app_cubit.dart';
 
 import 'package:window_manager/window_manager.dart';
+
+Future<void> initializaLocalDBHive() async {
+  var path = Directory.current.path;
+  Hive.init(path);
+  var testDB = await Hive.openBox('testDB');
+  log('Initialize testDB: ${testDB.values.toList().toString()}');
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,6 +35,7 @@ void main() async {
     await windowManager.setFullScreen(true);
   });
 
+  await initializaLocalDBHive();
   initializeCubits();
   runApp(const MyApp());
 }
