@@ -17,7 +17,7 @@ class MyRoutes {
       path: Routes.home.path,
       name: Routes.home.name,
       pageBuilder: (context, state) => const MaterialPage(
-        child: HomePage(),
+        child: HomePage2(), // HomePage(),
       ),
     )
   ];

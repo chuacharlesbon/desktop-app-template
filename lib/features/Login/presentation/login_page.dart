@@ -21,7 +21,12 @@ class LoginPage extends StatefulWidget {
 class _MyLoginPageState extends State<LoginPage> {
 
   TextEditingController managerCode = TextEditingController();
+  FocusNode managerCodeFocus = FocusNode();
+  bool isManagerCodeActive = false;
+
   TextEditingController password = TextEditingController();
+  FocusNode passwordFocus = FocusNode();
+  bool isPasswordActive = false;
 
   void initData() {
     log("Initialize Login screen");
@@ -31,12 +36,38 @@ class _MyLoginPageState extends State<LoginPage> {
   void dispose() {
     //
     super.dispose();
+    managerCodeFocus.removeListener(_onManagerCodeFocusChange);
+    managerCodeFocus.dispose();
+    passwordFocus.removeListener(_onPasswordFocusChange);
+    passwordFocus.dispose();
   }
 
   @override
   void initState() {
     initData();
     super.initState();
+    managerCodeFocus.addListener(_onManagerCodeFocusChange);
+    passwordFocus.addListener(_onPasswordFocusChange);
+  }
+
+  void _onManagerCodeFocusChange() {
+    // setState(() {
+    //   if(managerCodeFocus.hasFocus){
+    //     isManagerCodeActive = true;
+    //   }else{
+    //     isManagerCodeActive = false;
+    //   }
+    // });
+  }
+
+  void _onPasswordFocusChange() {
+    // setState(() {
+    //   if(passwordFocus.hasFocus){
+    //     isPasswordActive = true;
+    //   }else{
+    //     isPasswordActive = false;
+    //   }
+    // });
   }
 
   @override
@@ -125,6 +156,13 @@ class _MyLoginPageState extends State<LoginPage> {
                                 width: 400,
                                 child: TextFormField(
                                   controller: managerCode,
+                                  focusNode: managerCodeFocus,
+                                  onTap: () {
+                                    setState(() {
+                                      isManagerCodeActive = true;
+                                      isPasswordActive = false;
+                                    });
+                                  },
                                   decoration: InputDecoration(
                                     filled: true,
                                     fillColor: Colors.white,
@@ -137,6 +175,15 @@ class _MyLoginPageState extends State<LoginPage> {
                                 width: 400,
                                 child: TextFormField(
                                   controller: password,
+                                  focusNode: passwordFocus,
+                                  obscureText: true,
+                                  obscuringCharacter : "*",
+                                  onTap: () {
+                                    setState(() {
+                                      isManagerCodeActive = false;
+                                      isPasswordActive = true;
+                                    });
+                                  },
                                   decoration: InputDecoration(
                                     filled: true,
                                     fillColor: Colors.white,
@@ -150,9 +197,11 @@ class _MyLoginPageState extends State<LoginPage> {
                                   fixedSize: Size(400, 50),
                                   backgroundColor: Colors.redAccent,
                                 ),
-                                onPressed: () {
-                        
-                                },
+                                onPressed: managerCode.text.isNotEmpty && password.text.isNotEmpty
+                                ? () {
+                                  GetIt.instance<GoRouter>().goNamed(Routes.home.name);
+                                }
+                                : null,
                                 child: Center(
                                     child: Text(
                                       "LOGIN",
@@ -206,7 +255,11 @@ class _MyLoginPageState extends State<LoginPage> {
                                               ),
                                               onPressed: () {
                                                 setState(() {
-                                                  managerCode.text += "7";
+                                                  if(isManagerCodeActive){
+                                                    managerCode.text += "7";
+                                                  }else if (isPasswordActive){
+                                                    password.text += "7";
+                                                  }
                                                 });
                                               },
                                               child: Center(
@@ -233,7 +286,11 @@ class _MyLoginPageState extends State<LoginPage> {
                                               ),
                                               onPressed: () {
                                                 setState(() {
-                                                  managerCode.text += "8";
+                                                  if(isManagerCodeActive){
+                                                    managerCode.text += "8";
+                                                  }else if (isPasswordActive){
+                                                    password.text += "8";
+                                                  }
                                                 });
                                               },
                                               child: Center(
@@ -260,7 +317,11 @@ class _MyLoginPageState extends State<LoginPage> {
                                               ),
                                               onPressed: () {
                                                 setState(() {
-                                                  managerCode.text += "9";
+                                                  if(isManagerCodeActive){
+                                                    managerCode.text += "9";
+                                                  }else if (isPasswordActive){
+                                                    password.text += "9";
+                                                  }
                                                 });
                                               },
                                               child: Center(
@@ -286,9 +347,13 @@ class _MyLoginPageState extends State<LoginPage> {
                                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                               ),
                                               onPressed: () {
-                                                if(managerCode.text.isNotEmpty){
+                                                if(isManagerCodeActive && managerCode.text.isNotEmpty){
                                                   setState(() {
                                                     managerCode.text = managerCode.text.substring(0, (managerCode.text.length - 1));
+                                                  });
+                                                }else if(isPasswordActive && password.text.isNotEmpty){
+                                                  setState(() {
+                                                    password.text = password.text.substring(0, (password.text.length - 1));
                                                   });
                                                 }
                                               },
@@ -329,7 +394,11 @@ class _MyLoginPageState extends State<LoginPage> {
                                               ),
                                               onPressed: () {
                                                 setState(() {
-                                                  managerCode.text += "4";
+                                                  if(isManagerCodeActive){
+                                                    managerCode.text += "4";
+                                                  }else if (isPasswordActive){
+                                                    password.text += "4";
+                                                  }
                                                 });
                                               },
                                               child: Center(
@@ -356,7 +425,11 @@ class _MyLoginPageState extends State<LoginPage> {
                                               ),
                                               onPressed: () {
                                                 setState(() {
-                                                  managerCode.text += "5";
+                                                  if(isManagerCodeActive){
+                                                    managerCode.text += "5";
+                                                  }else if (isPasswordActive){
+                                                    password.text += "5";
+                                                  }
                                                 });
                                               },
                                               child: Center(
@@ -383,7 +456,11 @@ class _MyLoginPageState extends State<LoginPage> {
                                               ),
                                               onPressed: () {
                                                 setState(() {
-                                                  managerCode.text += "6";
+                                                  if(isManagerCodeActive){
+                                                    managerCode.text += "6";
+                                                  }else if (isPasswordActive){
+                                                    password.text += "6";
+                                                  }
                                                 });
                                               },
                                               child: Center(
@@ -410,7 +487,11 @@ class _MyLoginPageState extends State<LoginPage> {
                                               ),
                                               onPressed: () {
                                                 setState(() {
-                                                  managerCode.text += "#";
+                                                  if(isManagerCodeActive){
+                                                    managerCode.text += "#";
+                                                  }else if (isPasswordActive){
+                                                    password.text += "#";
+                                                  }
                                                 });
                                               },
                                               child: Center(
@@ -450,7 +531,11 @@ class _MyLoginPageState extends State<LoginPage> {
                                               ),
                                               onPressed: () {
                                                 setState(() {
-                                                  managerCode.text += "1";
+                                                  if(isManagerCodeActive){
+                                                    managerCode.text += "1";
+                                                  }else if (isPasswordActive){
+                                                    password.text += "1";
+                                                  }
                                                 });
                                               },
                                               child: Center(
@@ -477,7 +562,11 @@ class _MyLoginPageState extends State<LoginPage> {
                                               ),
                                               onPressed: () {
                                                 setState(() {
-                                                  managerCode.text += "2";
+                                                  if(isManagerCodeActive){
+                                                    managerCode.text += "2";
+                                                  }else if (isPasswordActive){
+                                                    password.text += "2";
+                                                  }
                                                 });
                                               },
                                               child: Center(
@@ -504,7 +593,11 @@ class _MyLoginPageState extends State<LoginPage> {
                                               ),
                                               onPressed: () {
                                                 setState(() {
-                                                  managerCode.text += "3";
+                                                  if(isManagerCodeActive){
+                                                    managerCode.text += "3";
+                                                  }else if (isPasswordActive){
+                                                    password.text += "3";
+                                                  }
                                                 });
                                               },
                                               child: Center(
@@ -531,7 +624,11 @@ class _MyLoginPageState extends State<LoginPage> {
                                               ),
                                               onPressed: () {
                                                 setState(() {
-                                                  managerCode.text += "*";
+                                                  if(isManagerCodeActive){
+                                                    managerCode.text += "*";
+                                                  }else if (isPasswordActive){
+                                                    password.text += "*";
+                                                  }
                                                 });
                                               },
                                               child: Center(
@@ -571,7 +668,11 @@ class _MyLoginPageState extends State<LoginPage> {
                                               ),
                                               onPressed: () {
                                                 setState(() {
-                                                  managerCode.text += ".";
+                                                  if(isManagerCodeActive){
+                                                    managerCode.text += ".";
+                                                  }else if (isPasswordActive){
+                                                    password.text += ".";
+                                                  }
                                                 });
                                               },
                                               child: Center(
@@ -598,7 +699,11 @@ class _MyLoginPageState extends State<LoginPage> {
                                               ),
                                               onPressed: () {
                                                 setState(() {
-                                                  managerCode.text += "0";
+                                                  if(isManagerCodeActive){
+                                                    managerCode.text += "0";
+                                                  }else if (isPasswordActive){
+                                                    password.text += "0";
+                                                  }
                                                 });
                                               },
                                               child: Center(
@@ -625,7 +730,11 @@ class _MyLoginPageState extends State<LoginPage> {
                                               ),
                                               onPressed: () {
                                                 setState(() {
-                                                  managerCode.text += ",";
+                                                  if(isManagerCodeActive){
+                                                    managerCode.text += ",";
+                                                  }else if (isPasswordActive){
+                                                    password.text += ",";
+                                                  }
                                                 });
                                               },
                                               child: Center(
@@ -651,9 +760,11 @@ class _MyLoginPageState extends State<LoginPage> {
                                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                               ),
                                               onPressed: () {
-                                                setState(() {
-                                                  managerCode.text += "";
-                                                });
+                                                if(isManagerCodeActive){
+                                                    managerCode.text += "";
+                                                  }else if (isPasswordActive){
+                                                    password.text += "";
+                                                  }
                                               },
                                               child: Center(
                                                   child: Text(
