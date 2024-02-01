@@ -1,13 +1,21 @@
 import 'dart:developer';
+import 'dart:math' hide log;
+import 'dart:typed_data';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myadmin/cubits/my_app_cubit/my_app_cubit.dart';
 import 'package:myadmin/routes/route_names.dart';
 import 'package:myadmin/utils/theme.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key, this.title});
@@ -30,6 +38,341 @@ class _MyLoginPageState extends State<LoginPage> {
 
   void initData() {
     log("Initialize Login screen");
+  }
+
+  void openPrintPreview() async {
+    PdfPageFormat pageFormat = PdfPageFormat(
+      58 * 2.5, // Millimeters
+      210, // Millimeters
+      marginAll: 5
+    );
+
+    Uint8List memoryPDF = Uint8List(0);
+    Future<void> getMemoryPDF() async {
+      Uint8List tempMemory = await _generatePdf(pageFormat, "Sales Invoice");
+      memoryPDF = tempMemory;
+    }
+
+    showDialog(
+        context: context,
+        builder: ((BuildContext _) {
+
+          void printDocument() {
+            Printing.layoutPdf(
+                name: "Sales Invoice",
+                usePrinterSettings: true,
+                onLayout: (PdfPageFormat format) async => _generatePdf(pageFormat, "Sales Invoice"));
+          }
+
+          void downloadDocument() async {
+            Uint8List savedFile = await _generatePdf(pageFormat, "Sales Invoice");
+            List<int> fileInts = List.from(savedFile);
+            // html.AnchorElement(href: "data:application/octet-stream;charset=utf-16le;base64,${base64.encode(fileInts)}")
+            //   ..setAttribute("download", "POS-SALE-${DateTime.now().millisecondsSinceEpoch}.pdf")
+            //   ..click();
+          }
+
+          // final GlobalKey<SfPdfViewerState> pdfViewerKey = GlobalKey();
+          // pdfViewerKey.currentState?.openBookmarkView();
+
+          return StatefulBuilder(builder: (context, setState) {
+            return Dialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: SizedBox(
+                    width: 1000,
+                    height: 600,
+                    child: Column(children: [
+                      Container(
+                        width: 1000,
+                        height: 50,
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.center, children: [
+                          Expanded(
+                            child: Text('PRINT PREVIEW')
+                          ),
+                          InkWell(
+                              child: const Icon(
+                                Icons.close,
+                                color: Color(0xFF333333),
+                              ),
+                              onTap: () {
+                                Navigator.pop(_, true);
+                              }),
+                        ]),
+                      ),
+                      SizedBox(
+                          width: 300,
+                          height: 550,
+                          child: PdfPreview(
+                            canDebug: false,
+                            canChangeOrientation: false,
+                            canChangePageFormat: false,
+                            allowPrinting: false,
+                            allowSharing: false,
+                            pdfFileName: 'POS-SALE-${DateTime.now().millisecondsSinceEpoch}',
+                            // loadingWidget: SfPdfViewer.memory(
+                            //   memoryPDF,
+                            //   key: pdfViewerKey,
+                            // ),
+                            loadingWidget: const Center(
+                              child: CircularProgressIndicator()
+                            ),
+                            onError: (_, data) {
+                              return const Center(
+                                child: CircularProgressIndicator(color: Colors.red)
+                              );
+                            },
+                            onPrintError: (_, data) {
+                              print(data);
+                            },
+                            actions: [
+                              SizedBox(
+                                width: 75,
+                                height: 40,
+                                child: Center(
+                                  child: Tooltip(
+                                    message: "Print",
+                                    child: InkWell(
+                                        onTap: () {
+                                          printDocument();
+                                        },
+                                        child: const Icon(Icons.print, color: Colors.white)),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 75,
+                                height: 40,
+                                child: Center(
+                                  child: Tooltip(
+                                    message: "Download PDF",
+                                    child: InkWell(
+                                        onTap: () {
+                                          downloadDocument();
+                                        },
+                                        child: const Icon(Icons.download, color: Colors.white)),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                height: 36,
+                                color: Colors.white,
+                                margin: const EdgeInsets.fromLTRB(0, 4, 0, 4),
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton<String>(
+                                    menuMaxHeight: 300,
+                                    value: "POS 58mmx210mm",
+                                    icon: const Icon(Icons.keyboard_arrow_down_sharp),
+                                    style: const TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.black
+                                    ),
+                                    onChanged: (String? newValue) {
+                                      // setState(() {
+                                        
+                                      // });
+                                    },
+                                    items: <String>[
+                                      "Letter",
+                                      "Legal",
+                                      "A4",
+                                      "POS 58mmx210mm",
+                                    ].map<DropdownMenuItem<String>>((String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(
+                                          value,
+                                          style: const TextStyle(
+                                            fontFamily: 'Poppins',
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.normal,
+                                            color: Colors.black
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 75,
+                                height: 40,
+                                child: Center(
+                                  child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Tooltip(
+                                          message: "Preview as portrait",
+                                          child: InkWell(
+                                              onTap: () {
+                                                // setState(() {
+                                                  
+                                                // });
+                                              },
+                                              child: Transform.rotate(
+                                                angle: -90 * pi / 180,
+                                                child: Icon(
+                                                  Icons.note_sharp,
+                                                  color:  Colors.white,
+                                                ),
+                                              )),
+                                        ),
+                                        Tooltip(
+                                          message: "Preview as landscape",
+                                          child: InkWell(
+                                              onTap: () {
+                                                // setState(() {
+                                                  
+                                                // });
+                                              },
+                                              child: Icon(
+                                                Icons.note_sharp,
+                                                color: Colors.white,
+                                              )),
+                                        )
+                                      ]),
+                                ),
+                              )
+                            ],
+                            build: (format) => _generatePdf(pageFormat, "Sales Invoice"),
+                          ))
+                    ])));
+          });
+        }));
+  }
+
+  Future<Uint8List> _generatePdf(PdfPageFormat format, String title) async {
+
+    final pdf = pw.Document(version: PdfVersion.pdf_1_5, compress: true);
+    final poppinsLight = await PdfGoogleFonts.poppinsLight();
+    
+    // final img = await rootBundle.load('assets/images/print-image.png');
+    // final imageBytes = img.buffer.asUint8List();
+    final netImage = await networkImage('https://my-assets-indol.vercel.app/assets/sp-qr-code.png');
+
+    List<pw.Widget> sections = [];
+
+    final body = pw.Container(
+      child: pw.Column(
+        children: [
+          pw.Text(
+            "Thriver Digital",
+            style: pw.TextStyle(
+              font: poppinsLight,
+              fontSize: 6 * 2,
+            ),
+            textAlign: pw.TextAlign.center
+          ),
+          pw.SizedBox(height: 4 * 2),
+          pw.Text(
+            "Tekqore Solutions",
+            style: pw.TextStyle(
+              font: poppinsLight,
+              fontSize: 4 * 2,
+            ),
+            textAlign: pw.TextAlign.center
+          ),
+          pw.SizedBox(height: 4 * 2),
+          // pw.Image(pw.MemoryImage(imageBytes)),
+          pw.Image(netImage),
+          pw.SizedBox(height: 4 * 2),
+          pw.Text(
+            "Test Print",
+            style: pw.TextStyle(
+              font: poppinsLight,
+              fontSize: 4 * 2,
+            ),
+            textAlign: pw.TextAlign.center
+          ),
+          pw.SizedBox(height: 4 * 2),
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            children: [
+              pw.Text(
+                "Product 1",
+                style: pw.TextStyle(
+                  font: poppinsLight,
+                  fontSize: 4 * 2,
+                ),
+                textAlign: pw.TextAlign.center
+              ),
+              pw.Text(
+                "P 0.00",
+                style: pw.TextStyle(
+                  font: poppinsLight,
+                  fontSize: 4 * 2,
+                ),
+                textAlign: pw.TextAlign.center
+              ),
+            ]
+          ),
+          pw.SizedBox(height: 4 * 2),
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            children: [
+              pw.Text(
+                "Product 2",
+                style: pw.TextStyle(
+                  font: poppinsLight,
+                  fontSize: 4 * 2,
+                ),
+                textAlign: pw.TextAlign.center
+              ),
+              pw.Text(
+                "P 0.00",
+                style: pw.TextStyle(
+                  font: poppinsLight,
+                  fontSize: 4 * 2,
+                ),
+                textAlign: pw.TextAlign.center
+              ),
+            ]
+          ),
+          pw.SizedBox(height: 10 * 2),
+          pw.Text(
+            "For inquiries, you can email as at tekqore@gmail.com. Visit our website: https://thriverdigital.com",
+            style: pw.TextStyle(
+              font: poppinsLight,
+              fontSize: 3 * 2,
+            ),
+            textAlign: pw.TextAlign.center
+          ),
+          pw.SizedBox(height: 10 * 2),
+          pw.Text(
+            "Thank you for your business",
+            style: pw.TextStyle(
+              font: poppinsLight,
+              fontSize: 4 * 2,
+            ),
+            textAlign: pw.TextAlign.center
+          ),
+        ]
+      )
+    );
+
+    sections.add(body);
+
+    pdf.addPage(
+      pw.MultiPage(
+        pageFormat: format,
+        build: (context) => sections,
+      ),
+    );
+
+    final newDocument = pdf.save();
+
+    // Print the PDF document
+    /* Printing.layoutPdf(
+      onLayout: (PdfPageFormat format) async => newDocument
+    ); */
+
+    return newDocument;
+
   }
 
   @override
@@ -210,6 +553,18 @@ class _MyLoginPageState extends State<LoginPage> {
                                       )
                                     )
                                   )
+                              ),
+                              const SizedBox(height: 20),
+                              TextButton(
+                                onPressed: () {
+                                  openPrintPreview();
+                                },
+                                child: Text(
+                                  "Test Printer here",
+                                  style: TextStyle(
+                                    color: Colors.blue
+                                  )
+                                )
                               )
                             ],
                           ),

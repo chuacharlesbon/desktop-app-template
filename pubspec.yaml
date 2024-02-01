@@ -47,6 +47,9 @@ dependencies:
   equatable: ^2.0.5
   window_manager: ^0.3.7
   hive: ^2.2.3
+  printing: ^5.11.1
+  syncfusion_flutter_pdfviewer: ^24.2.3
+  auto_size_text: ^3.0.0
 
 dev_dependencies:
   flutter_test:
